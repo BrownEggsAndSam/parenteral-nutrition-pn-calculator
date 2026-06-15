@@ -1,4 +1,4 @@
-# parenteral-nutrition-pn-calculator
+# Parenteral Nutrition (PN) Calculator
 Mobile-first Flask app for quick Parenteral Nutrition (PN/TPN) worksheet calculations, including TFL, IVFE, PN rate, protein, and GIR.
 
 ## Clinical Disclaimer
