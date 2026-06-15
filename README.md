@@ -6,8 +6,9 @@ This version is intentionally focused on quick bedside/mobile calculations for c
 
 ## Features
 
-- Password-protected blurred login page
 - Mobile-first compact calculator UI
+- Optional password-protected blurred login page
+- Public URL deployment mode for quick access
 - Required named calculation sessions
 - Save, edit, duplicate, delete, and print sessions
 - Live worksheet math as values are entered
@@ -44,6 +45,38 @@ changeme
 
 Change `APP_ACCESS_PASSWORD` and `SECRET_KEY` in `.env` before sharing.
 
+## Deploy to a public URL
+
+This repo includes Render deployment support:
+
+- `render.yaml`
+- `deploy.py`
+- `Procfile`
+- `DEPLOYMENT.md`
+
+The Render blueprint runs:
+
+```bash
+gunicorn deploy:app
+```
+
+By default, the Render blueprint sets:
+
+```env
+PUBLIC_ACCESS=true
+```
+
+That means anyone with the deployed URL can open and use the calculator.
+
+To turn the blurred password screen back on, set this in Render:
+
+```env
+PUBLIC_ACCESS=false
+APP_ACCESS_PASSWORD=<your shared password>
+```
+
+See `DEPLOYMENT.md` for the full deployment steps.
+
 ## Clinical disclaimer
 
 This application is a calculation aid based on a worksheet workflow. It does not replace pharmacist, dietitian, physician, or institutional review. All PN orders, concentrations, compatibility, labs, and local protocols must be verified before clinical use.
@@ -56,12 +89,19 @@ For production, run behind HTTPS and set environment variables securely:
 
 ```env
 APP_ACCESS_PASSWORD=<strong password>
+PUBLIC_ACCESS=false
 SECRET_KEY=<long random secret>
 DATABASE_PATH=instance/pn_calculator.sqlite3
 ```
 
-Example Gunicorn command:
+Example Gunicorn command for normal password-protected local hosting:
 
 ```bash
 gunicorn app:app
+```
+
+Example Gunicorn command for deployment mode:
+
+```bash
+gunicorn deploy:app
 ```
