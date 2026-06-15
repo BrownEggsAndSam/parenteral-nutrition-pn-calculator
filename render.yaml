@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: parenteral-nutrition-pn-calculator
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn deploy:app
+    healthCheckPath: /
+    autoDeployTrigger: commit
+    envVars:
+      - key: SECRET_KEY
+        generateValue: true
+      - key: PUBLIC_ACCESS
+        value: "true"
+      - key: APP_ACCESS_PASSWORD
+        sync: false
+      - key: DATABASE_PATH
+        value: /var/data/pn_calculator.sqlite3
+    disk:
+      name: pn-calculator-data
+      mountPath: /var/data
+      sizeGB: 1
